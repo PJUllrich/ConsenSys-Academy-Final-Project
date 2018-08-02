@@ -5,8 +5,13 @@
   <mat-card-content>
     <mat-list>
       <mat-list-item>
-        <div class="mat-subheading-1">Address:</div>
-        <div>{{ web3Service.web3.eth.accounts[0] }}</div>
+        <div>Address: {{ web3Service.account.getValue() }}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div>Balance: {{ balanceCrypto }} {{ appSettings.SYMBOL_CRYPTO }}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <div>Balance: {{ balanceFiat | number : '1.2-2' }} {{ appSettings.SYMBOL_FIAT }}</div>
       </mat-list-item>
     </mat-list>
   </mat-card-content>

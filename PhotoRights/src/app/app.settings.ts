@@ -1,3 +1,4 @@
 export class AppSettings {
-  public static DEFAULT_HTTP_PROVIDER = "http://localhost:8545"
+  public static SYMBOL_CRYPTO = 'ETH';
+  public static SYMBOL_FIAT = 'USD';
 }

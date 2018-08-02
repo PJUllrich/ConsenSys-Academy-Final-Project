@@ -1,5 +1,8 @@
-<app-register></app-register>
-<app-check></app-check>
-<app-account></app-account>
-<app-transfer></app-transfer>
-<app-remove></app-remove>
+<mat-grid-list [cols]="3" rowHeight="fit">
+  <mat-grid-tile><app-register></app-register></mat-grid-tile>
+  <mat-grid-tile><app-check></app-check></mat-grid-tile>
+  <mat-grid-tile><app-account></app-account></mat-grid-tile>
+  <mat-grid-tile><app-transfer></app-transfer></mat-grid-tile>
+  <mat-grid-tile><app-remove></app-remove></mat-grid-tile>
+  <mat-grid-tile><app-registrations></app-registrations></mat-grid-tile>
+</mat-grid-list>

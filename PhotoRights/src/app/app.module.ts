@@ -10,11 +10,13 @@ import {
   MatButtonModule,
   MatCardModule,
   MatDialogModule,
+  MatGridListModule,
   MatInputModule,
   MatListModule
 } from '@angular/material';
 import { AccountComponent } from './components/account/account.component';
 import { WarningComponent } from './components/dialogs/warning/warning.component';
+import { RegistrationsComponent } from './components/registrations/registrations.component';
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import { WarningComponent } from './components/dialogs/warning/warning.component
     TransferComponent,
     CheckComponent,
     AccountComponent,
-    WarningComponent
+    WarningComponent,
+    RegistrationsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,9 +37,11 @@ import { WarningComponent } from './components/dialogs/warning/warning.component
     MatCardModule,
     MatInputModule,
     MatListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [RootComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
