@@ -3,7 +3,8 @@
     <div class="mat-headline">Remove</div>
   </mat-card-header>
   <mat-card-content>
-    <input type="file">
+    <input type="file" (change)="load($event)">
+    <div>{{ toHex(fingerprint) }}</div>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary">Remove</button>

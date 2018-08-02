@@ -28,7 +28,7 @@ import { RegistrationsComponent } from './components/registrations/registrations
     CheckComponent,
     AccountComponent,
     WarningComponent,
-    RegistrationsComponent
+    RegistrationsComponent,
   ],
   imports: [
     BrowserModule,

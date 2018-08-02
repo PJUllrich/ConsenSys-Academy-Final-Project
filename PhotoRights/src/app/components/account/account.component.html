@@ -5,13 +5,13 @@
   <mat-card-content>
     <mat-list>
       <mat-list-item>
-        <div>Address: {{ web3Service.account.getValue() }}</div>
+        <div>Address: {{ accountService.account }}</div>
       </mat-list-item>
       <mat-list-item>
-        <div>Balance: {{ balanceCrypto }} {{ appSettings.SYMBOL_CRYPTO }}</div>
+        <div>Balance: {{ accountService.balanceCrypto }} {{ appSettings.SYMBOL_CRYPTO }}</div>
       </mat-list-item>
       <mat-list-item>
-        <div>Balance: {{ balanceFiat | number : '1.2-2' }} {{ appSettings.SYMBOL_FIAT }}</div>
+        <div>Balance: {{ accountService.balanceFiat | number : '1.2-2' }} {{ appSettings.SYMBOL_FIAT }}</div>
       </mat-list-item>
     </mat-list>
   </mat-card-content>

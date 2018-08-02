@@ -17,8 +17,8 @@ window.web3 = window.web3 || {};
 })
 export class Web3Service {
 
-  public web3: any;
-  public account = new BehaviorSubject<string>('');
+  private _web3: any;
+  public initialized = new BehaviorSubject(false);
 
   constructor(private dialog: MatDialog) {
     this.instantiate();
@@ -26,9 +26,8 @@ export class Web3Service {
 
   private instantiate() {
     if (typeof window.web3 !== 'undefined') {
-      this.web3 = new Web3(window.web3.currentProvider);
-      this.setEventListeners();
-      this.setDefaultAccount();
+      this._web3 = new Web3(window.web3.currentProvider);
+      this.initialized.next(true);
     } else {
       this.dialog.open(WarningComponent, {
         data: 'No Web3 could be detected. Please install MetaMask and refresh the page.'
@@ -36,16 +35,7 @@ export class Web3Service {
     }
   }
 
-  private setEventListeners() {
-    this.web3.currentProvider.publicConfigStore.on('update', (data) => {
-      console.log('Update: ' + JSON.stringify(data));
-      this.setDefaultAccount();
-    });
-  }
-
-  private setDefaultAccount() {
-    this.web3.eth.getAccounts().then(accounts => {
-      this.account.next(accounts[0]);
-    });
+  get web3(): any {
+    return this._web3;
   }
 }
