@@ -3,4 +3,25 @@
 
 .mat-card {
   @include mat-elevation(10);
+  height: 80%;
+  width: 90%;
+  display: flex !important;
+  flex-direction: column;
+}
+
+.mat-card-content {
+  flex-grow: 1;
+}
+
+.mat-card-header {
+  flex-shrink: 0;
+}
+
+.mat-card-actions {
+  display: flex !important;
+  justify-content: center;
+}
+
+.mat-card-actions .mat-raised-button {
+  margin: 0 20px !important;
 }

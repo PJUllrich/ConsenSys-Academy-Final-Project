@@ -1,5 +1,6 @@
 mat-grid-list {
-  height: 750px;
+  height: 100%;
+  background: #f0f0f0;
 }
 
 .filling {

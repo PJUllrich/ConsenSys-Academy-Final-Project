@@ -17,6 +17,9 @@ import {
 import { AccountComponent } from './components/account/account.component';
 import { WarningComponent } from './components/dialogs/warning/warning.component';
 import { RegistrationsComponent } from './components/registrations/registrations.component';
+import { ContractComponent } from './components/contract/contract.component';
+import { EventComponent } from './components/event/event.component';
+import { AbiComponent } from './components/dialogs/abi/abi.component';
 
 
 @NgModule({
@@ -29,6 +32,9 @@ import { RegistrationsComponent } from './components/registrations/registrations
     AccountComponent,
     WarningComponent,
     RegistrationsComponent,
+    ContractComponent,
+    EventComponent,
+    AbiComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +45,9 @@ import { RegistrationsComponent } from './components/registrations/registrations
     MatListModule,
     MatDialogModule,
     MatGridListModule
+  ],
+  entryComponents: [
+    AbiComponent
   ],
   providers: [],
   bootstrap: [RootComponent]

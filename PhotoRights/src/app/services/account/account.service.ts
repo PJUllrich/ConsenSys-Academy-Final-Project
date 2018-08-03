@@ -19,7 +19,6 @@ export class AccountService {
     this.web3Service.initialized.subscribe((initialized) => {
       if (initialized) {
         this.initialize();
-        this.web3Service.initialized.unsubscribe();
       }
     });
   }
