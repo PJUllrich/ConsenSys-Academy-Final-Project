@@ -10,6 +10,8 @@ import { AbiComponent } from '../dialogs/abi/abi.component';
 })
 export class ContractComponent implements OnInit {
 
+  public contractAddress: string;
+
   constructor(public contractService: ContractService, private matDialog: MatDialog) { }
 
   ngOnInit() {
@@ -17,5 +19,13 @@ export class ContractComponent implements OnInit {
 
   public showABI() : void {
     this.matDialog.open(AbiComponent, null);
+  }
+
+  public deploy() : void {
+    this.contractService.deploy();
+  }
+
+  public connect() : void {
+    this.contractService.connect(this.contractAddress);
   }
 }

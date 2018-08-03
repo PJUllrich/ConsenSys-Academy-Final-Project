@@ -20,6 +20,7 @@ import { RegistrationsComponent } from './components/registrations/registrations
 import { ContractComponent } from './components/contract/contract.component';
 import { EventComponent } from './components/event/event.component';
 import { AbiComponent } from './components/dialogs/abi/abi.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { AbiComponent } from './components/dialogs/abi/abi.component';
     MatInputModule,
     MatListModule,
     MatDialogModule,
-    MatGridListModule
+    MatGridListModule,
+    FormsModule
   ],
   entryComponents: [
     AbiComponent
