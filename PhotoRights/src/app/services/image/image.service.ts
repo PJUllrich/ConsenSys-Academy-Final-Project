@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ImageService {
 
-  public static getFile(event): Promise<Blob> {
+  public static getFile(filePath): Promise<Blob> {
     return new Promise(((resolve, reject) => {
       let reader = new FileReader();
       reader.onload = () => {
@@ -16,7 +16,7 @@ export class ImageService {
         reject(new DOMException('Error occurred while parsing input file.'));
       };
 
-      reader.readAsArrayBuffer(event.target.files[0]);
+      reader.readAsDataURL(filePath);
     }));
   }
 }

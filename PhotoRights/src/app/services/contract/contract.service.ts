@@ -11,12 +11,10 @@ export class ContractService {
 
   private _contract: any;
   private _contractEvents: any;
-  private _payload: any;
   public events = new ReplaySubject();
 
   constructor(private web3Service: Web3Service, private accountService: AccountService) {
     this.web3Service.initialized.subscribe(initialized => { if (initialized) this.setContract(); });
-    this.accountService.accountObservable.subscribe((account) => this.setAccount(account));
   }
 
   public deploy() {
@@ -36,31 +34,26 @@ export class ContractService {
 
   public register(fingerprint: string): Promise<any> {
     return this._contract.methods.register(fingerprint)
-      .send(this._payload)
+      .send(this.payload)
   }
   public check(fingerprint: string): Promise<any> {
     return this._contract.methods.checkRegistration(fingerprint)
-      .call(this._payload)
+      .call(this.payload)
   }
 
   public remove(index: number): Promise<any> {
     return this._contract.methods.remove(index)
-      .send(this._payload)
+      .send(this.payload)
   }
 
   public transfer(index: number, toAddress: string) {
     return this._contract.methods.transfer(index, toAddress)
-      .send(this._payload)
+      .send(this.payload)
   }
 
   private setContract(address: string = null) {
     this._contract = new this.web3Service.web3.eth.Contract(ABI['abi'], address, {from: this.accountService.account});
     this._contractEvents = new this.web3Service.web3Events.eth.Contract(ABI['abi'], address);
-  }
-
-  private setAccount(account) {
-    this._contract.options.from = account;
-    this._payload = {from: account};
   }
 
   private startEventListening() {
@@ -76,5 +69,9 @@ export class ContractService {
 
   get contract() {
     return this._contract;
+  }
+
+  get payload() {
+    return {from: this.accountService.account}
   }
 }

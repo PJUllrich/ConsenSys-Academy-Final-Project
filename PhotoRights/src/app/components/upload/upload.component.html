@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-header>
+    <div class="mat-headline">Interact with Contract</div>
+  </mat-card-header>
+  <mat-card-content>
+    <form #form>
+      <mat-list-item><input type="file" (change)="load($event)"></mat-list-item>
+    </form>
+    <mat-list-item><div>SHA256 Hash: {{ fingerprint | slice : 0 : 7 }}...{{fingerprint | slice : -7 }}</div></mat-list-item>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="register(fingerprint)" [disabled]="!allSet()">Register</button>
+    <button mat-raised-button color="primary" (click)="check(fingerprint)" [disabled]="!allSet()">Check</button>
+    <button mat-raised-button color="warn" (click)="clear()">Clear</button>
+  </mat-card-actions>
+</mat-card>

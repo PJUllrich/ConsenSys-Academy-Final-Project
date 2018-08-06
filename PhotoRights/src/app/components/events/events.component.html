@@ -1,0 +1,35 @@
+<mat-card>
+  <mat-card-header>
+    <div class="mat-headline">Events</div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="data-table mat-elevation-z2">
+      <mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="blockNumber">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Block No.</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.blockNumber }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.event }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="returnValues">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Information</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-raised-button (click)="showInformation(element)">Show</button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <div class="no-data-row mat-caption" *ngIf="this.dataSource.data.length == 0">
+        <span>No Events yet</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -8,8 +8,12 @@ export abstract class FileLoaderComponent {
   protected constructor() { }
 
   public load(event) {
-    ImageService.getFile(event)
-      .then(file => this.fingerprint = HashService.toHex(file))
+    ImageService.getFile(event.target.files[0])
+      .then(file => {
+        this.fingerprint = HashService.toHex(file);
+        console.log(file);
+        console.log(this.fingerprint);
+      })
       .catch(error => console.error(error));
   }
 
