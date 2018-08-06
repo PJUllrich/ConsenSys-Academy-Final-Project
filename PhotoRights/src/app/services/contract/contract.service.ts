@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as ABI from 'src/assets/PhotoRights.json';
 import { Web3Service } from '../web3/web3.service';
 import { AccountService } from '../account/account.service';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,28 +10,64 @@ import { AccountService } from '../account/account.service';
 export class ContractService {
 
   private _contract: any;
+  private _contractEvents: any;
+  private _payload: any;
+  public events = new ReplaySubject();
 
   constructor(private web3Service: Web3Service, private accountService: AccountService) {
-    this.web3Service.initialized.subscribe(initialized => { if (initialized) this.setContract() });
+    this.web3Service.initialized.subscribe(initialized => { if (initialized) this.setContract(); });
     this.accountService.accountObservable.subscribe((account) => this.setAccount(account));
   }
+
   public deploy() {
     this._contract
-      .deploy({ data: ABI['bytecode'] as string, arguments: null })
-      .send({ from: this._contract.options.from })
-      .then(instance => this._contract.options.address = instance.options.address);
+      .deploy({data: ABI['bytecode'] as string, arguments: null})
+      .send({from: this._contract.options.from})
+      .then(instance => {
+        this.setContract(instance.options.address);
+        this.startEventListening();
+      });
   }
 
-  public connect(contractAddress) {
-    this._contract.options.address = contractAddress;
+  public connect(contractAddress: string) {
+    this.setContract(contractAddress);
+    this.startEventListening();
   }
 
-  private setContract() {
-    this._contract = new this.web3Service.web3.eth.Contract(ABI['abi'], null, { from: this.accountService.account });
+  public register(fingerprint: string): Promise<any> {
+    return this._contract.methods.register(fingerprint)
+      .send(this._payload)
+  }
+  public check(fingerprint: string): Promise<any> {
+    return this._contract.methods.checkRegistration(fingerprint)
+      .call(this._payload)
+  }
+
+  public remove(index: number): Promise<any> {
+    return this._contract.methods.remove(index)
+      .send(this._payload)
+  }
+
+  public transfer(index: number, toAddress: string) {
+    return this._contract.methods.transfer(index, toAddress)
+      .send(this._payload)
+  }
+
+  private setContract(address: string = null) {
+    this._contract = new this.web3Service.web3.eth.Contract(ABI['abi'], address, {from: this.accountService.account});
+    this._contractEvents = new this.web3Service.web3Events.eth.Contract(ABI['abi'], address);
   }
 
   private setAccount(account) {
     this._contract.options.from = account;
+    this._payload = {from: account};
+  }
+
+  private startEventListening() {
+    this._contractEvents.events.allEvents({adder: this.accountService.account, fromBlock: 0}, (error, event) => {
+      if (error != null) console.error(error);
+      if (event != null) this.events.next(event);
+    })
   }
 
   get abi() {

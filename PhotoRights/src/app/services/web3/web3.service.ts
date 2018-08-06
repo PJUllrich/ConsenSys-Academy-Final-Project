@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material';
 import { WarningComponent } from '../../components/dialogs/warning/warning.component';
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
+import { AppSettings } from '../../app.settings';
 
 declare global {
   interface Window {
@@ -18,6 +19,7 @@ window.web3 = window.web3 || {};
 export class Web3Service {
 
   private _web3: any;
+  private _web3Events: any;
   public initialized = new BehaviorSubject(false);
 
   constructor(private dialog: MatDialog) {
@@ -27,6 +29,7 @@ export class Web3Service {
   private instantiate() {
     if (typeof window.web3 !== 'undefined') {
       this._web3 = new Web3(window.web3.currentProvider);
+      this._web3Events = new Web3(AppSettings.EVENTS_URL);
       this.initialized.next(true);
     } else {
       this.dialog.open(WarningComponent, {
@@ -37,5 +40,9 @@ export class Web3Service {
 
   get web3(): any {
     return this._web3;
+  }
+
+  get web3Events(): any {
+    return this._web3Events;
   }
 }

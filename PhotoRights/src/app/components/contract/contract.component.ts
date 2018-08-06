@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ContractService } from '../../services/contract/contract.service';
 import { MatDialog } from '@angular/material';
 import { AbiComponent } from '../dialogs/abi/abi.component';
@@ -8,14 +8,11 @@ import { AbiComponent } from '../dialogs/abi/abi.component';
   templateUrl: './contract.component.html',
   styleUrls: ['./contract.component.css']
 })
-export class ContractComponent implements OnInit {
+export class ContractComponent {
 
-  public contractAddress: string;
+  public address: string;
 
   constructor(public contractService: ContractService, private matDialog: MatDialog) { }
-
-  ngOnInit() {
-  }
 
   public showABI() : void {
     this.matDialog.open(AbiComponent, null);
@@ -26,6 +23,14 @@ export class ContractComponent implements OnInit {
   }
 
   public connect() : void {
-    this.contractService.connect(this.contractAddress);
+    this.contractService.connect(this.address);
+  }
+
+  public setAddress(address: string) {
+    this.address = address;
+  }
+
+  public allSet() {
+    return this.address != null && this.address != '';
   }
 }

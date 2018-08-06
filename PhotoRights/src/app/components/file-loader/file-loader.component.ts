@@ -1,22 +1,19 @@
 import { ImageService } from '../../services/image/image.service';
 import { HashService } from '../../services/hash/hash.service';
-import { Component } from '@angular/core';
 
-@Component({
-  template: ''
-})
 export abstract class FileLoaderComponent {
-  protected abstract fingerprint: [number];
+
+  protected abstract fingerprint: string;
 
   protected constructor() { }
 
   public load(event) {
     ImageService.getFile(event)
-      .then(file => this.fingerprint = HashService.sha256(file))
+      .then(file => this.fingerprint = HashService.toHex(file))
       .catch(error => console.error(error));
   }
 
-  public toHex(): string {
-    return this.fingerprint ? HashService.toHex(this.fingerprint) : '';
+  public toBytes(): number[] {
+    return this.fingerprint ? HashService.toBytes(this.fingerprint) : [0];
   }
 }

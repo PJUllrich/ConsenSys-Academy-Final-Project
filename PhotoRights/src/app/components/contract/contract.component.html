@@ -2,12 +2,25 @@
   <mat-card-header>
     <div class="mat-headline">Contract</div>
   </mat-card-header>
+
   <mat-card-content>
-    <button mat-raised-button (click)="showABI()">Show ABI</button>
-    <input matInput placeholder="Contract Address" [ngModel]="contractAddress">
+    <mat-list>
+      <mat-list-item>
+        <div>Address: {{ contractService.contract.options.address }}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-form-field>
+          <input #address matInput placeholder="Contract Address" (keyup)="setAddress(address.value)">
+        </mat-form-field>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-raised-button (click)="showABI()">Show ABI</button>
+      </mat-list-item>
+    </mat-list>
   </mat-card-content>
+
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="deploy()">Deploy</button>
-    <button mat-raised-button color="primary" (click)="connect()">Connect</button>
+    <button mat-raised-button color="primary" (click)="deploy()">Deploy new Contract</button>
+    <button mat-raised-button color="primary" (click)="connect()" [disabled]="!allSet()">Connect to existing Contract</button>
   </mat-card-actions>
 </mat-card>

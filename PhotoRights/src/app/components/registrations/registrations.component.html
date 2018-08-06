@@ -3,11 +3,30 @@
     <div class="mat-headline">Registrations</div>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item>
-      </mat-list-item>
-      <mat-list-item>
-      </mat-list-item>
-    </mat-list>
+    <div class="data-table mat-elevation-z2" matSort>
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="index">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Index</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.returnValues.index }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="owner">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Owner</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.returnValues.adder | slice : 0 : 6 }}...{{ element.returnValues.adder | slice : -6 }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hash">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Hash</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.returnValues.hash | slice : 0 : 6 }}...{{ element.returnValues.hash | slice : -6 }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <div class="no-data-row mat-caption" *ngIf="this.dataSource.data.length == 0">
+        <span>No Registrations yet</span>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>

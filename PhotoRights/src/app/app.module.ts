@@ -1,10 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RootComponent } from './components/root/root.component';
-import { RegisterComponent } from './components/register/register.component';
-import { RemoveComponent } from './components/remove/remove.component';
-import { TransferComponent } from './components/transfer/transfer.component';
-import { CheckComponent } from './components/check/check.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
@@ -12,30 +8,32 @@ import {
   MatDialogModule,
   MatGridListModule,
   MatInputModule,
-  MatListModule
+  MatListModule,
+  MatSortModule,
+  MatTableModule
 } from '@angular/material';
 import { AccountComponent } from './components/account/account.component';
 import { WarningComponent } from './components/dialogs/warning/warning.component';
 import { RegistrationsComponent } from './components/registrations/registrations.component';
 import { ContractComponent } from './components/contract/contract.component';
-import { EventComponent } from './components/event/event.component';
 import { AbiComponent } from './components/dialogs/abi/abi.component';
 import { FormsModule } from '@angular/forms';
+import { UploadComponent } from './components/upload/upload.component';
+import { EventsComponent } from './components/events/events.component';
+import { EventDialogComponent } from './components/dialogs/event-dialog/event-dialog.component';
 
 
 @NgModule({
   declarations: [
     RootComponent,
-    RegisterComponent,
-    RemoveComponent,
-    TransferComponent,
-    CheckComponent,
     AccountComponent,
     WarningComponent,
     RegistrationsComponent,
     ContractComponent,
-    EventComponent,
     AbiComponent,
+    UploadComponent,
+    EventsComponent,
+    EventDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,10 +44,14 @@ import { FormsModule } from '@angular/forms';
     MatListModule,
     MatDialogModule,
     MatGridListModule,
-    FormsModule
+    FormsModule,
+    MatTableModule,
+    MatSortModule
   ],
   entryComponents: [
-    AbiComponent
+    AbiComponent,
+    WarningComponent,
+    EventDialogComponent
   ],
   providers: [],
   bootstrap: [RootComponent]
