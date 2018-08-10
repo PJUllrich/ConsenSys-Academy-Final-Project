@@ -1,6 +1,8 @@
 pragma solidity ^0.4.24;
 
-contract PhotoRights {
+import "../installed_contracts/zeppelin/contracts/lifecycle/Pausable.sol";
+
+contract PhotoRights is Pausable {
 
     struct Hash {
         bytes32 fingerprint;
@@ -15,7 +17,7 @@ contract PhotoRights {
     event Transfer(address oldOwner, address newOwner, uint newIndex);
 
     modifier exists(uint index) {
-        require(0 <= index);
+        require(index >= 0);
         require(index < registry.length);
         require(registry[index].fingerprint != 0);
         _;
@@ -26,18 +28,23 @@ contract PhotoRights {
         _;
     }
 
-    function register(string imageHash) external {
+    modifier hashAllowed(string imageHash) {
+        require(digest(imageHash) != digest(''));
+        _;
+    }
+
+    function register(string imageHash) external hashAllowed(imageHash) {
         bytes32 fingerprint = digest(imageHash);
 
-        (bool registered,) = isRegistered(fingerprint);
+        (bool registered, ) = isRegistered(fingerprint);
         require(!registered);
 
         registry.push(Hash(fingerprint, msg.sender, now));
 
-        emit Registration(msg.sender, registry.length, fingerprint);
+        emit Registration(msg.sender, registry.length - 1, fingerprint);
     }
 
-    function checkRegistration(string imageHash) external view returns (bool, uint) {
+    function checkRegistration(string imageHash) external view hashAllowed(imageHash) returns (bool, uint) {
         bytes32 fingerprint = digest(imageHash);
         return isRegistered(fingerprint);
     }
@@ -49,6 +56,8 @@ contract PhotoRights {
     }
 
     function transfer(uint index, address newOwner) external exists(index) isOwner(msg.sender, index) {
+        require(newOwner != address(0));
+
         registry[index].owner = newOwner;
 
         emit Transfer(msg.sender, newOwner, index);
@@ -56,10 +65,6 @@ contract PhotoRights {
 
     function getRegistrationCount() external view returns (uint) {
         return registry.length;
-    }
-
-    function getHash(uint index) public view exists(index) returns (bytes32, address, uint) {
-        return (registry[index].fingerprint, registry[index].owner, registry[index].timestamp);
     }
 
     function isRegistered(bytes32 fingerprint) internal view returns (bool, uint) {

@@ -18,6 +18,7 @@ export class ContractService {
   }
 
   public deploy() {
+    this._contract.options.from = this.accountService.account;
     this._contract
       .deploy({data: ABI['bytecode'] as string, arguments: null})
       .send({from: this._contract.options.from})

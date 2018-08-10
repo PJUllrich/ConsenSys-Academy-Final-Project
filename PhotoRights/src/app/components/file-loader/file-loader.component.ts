@@ -9,11 +9,7 @@ export abstract class FileLoaderComponent {
 
   public load(event) {
     ImageService.getFile(event.target.files[0])
-      .then(file => {
-        this.fingerprint = HashService.toHex(file);
-        console.log(file);
-        console.log(this.fingerprint);
-      })
+      .then(file => this.fingerprint = HashService.toHex(file))
       .catch(error => console.error(error));
   }
 

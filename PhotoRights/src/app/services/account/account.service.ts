@@ -13,7 +13,7 @@ export class AccountService {
   private _balanceFiat: number = 0;
 
   private _account: string;
-  public accountObservable = new BehaviorSubject<string>('');
+  public accountObservable = new BehaviorSubject<string>(null);
 
   constructor(private web3Service: Web3Service) {
     this.web3Service.initialized.subscribe((initialized) => {
@@ -37,7 +37,7 @@ export class AccountService {
   }
 
   private update(account: string) {
-    this._account = account;
+    this._account = account.toUpperCase();
     this.getDefaultBalance()
       .then(() => this.getFiatBalance())
       .then(() => this.accountObservable.next(this._account));

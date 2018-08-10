@@ -22,7 +22,6 @@ export class EventsComponent implements OnInit {
   ngOnInit(): void {
     this._eventSubscription = this.contractService.events.subscribe(
       (event: BaseEvent) => {
-        console.log('Events: New event ' + JSON.stringify(event));
         this._events.push(event);
         this.dataSource = new MatTableDataSource(this._events);
       }

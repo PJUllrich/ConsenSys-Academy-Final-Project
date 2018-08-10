@@ -10,11 +10,6 @@
           <mat-cell *matCellDef="let element">{{ element.returnValues.index }}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="owner">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Owner</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.returnValues.adder | slice : 0 : 6 }}...{{ element.returnValues.adder | slice : -6 }}</mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="hash">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Hash</mat-header-cell>
           <mat-cell *matCellDef="let element">{{ element.returnValues.hash | slice : 0 : 6 }}...{{ element.returnValues.hash | slice : -6 }}</mat-cell>

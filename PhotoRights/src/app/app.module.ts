@@ -7,6 +7,7 @@ import {
   MatCardModule,
   MatDialogModule,
   MatGridListModule,
+  MatIconModule,
   MatInputModule,
   MatListModule,
   MatSortModule,
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { UploadComponent } from './components/upload/upload.component';
 import { EventsComponent } from './components/events/events.component';
 import { EventDialogComponent } from './components/dialogs/event-dialog/event-dialog.component';
+import { ResultDialogComponent } from './components/dialogs/result-dialog/result-dialog.component';
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import { EventDialogComponent } from './components/dialogs/event-dialog/event-di
     UploadComponent,
     EventsComponent,
     EventDialogComponent,
+    ResultDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -46,12 +49,14 @@ import { EventDialogComponent } from './components/dialogs/event-dialog/event-di
     MatGridListModule,
     FormsModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatIconModule
   ],
   entryComponents: [
     AbiComponent,
     WarningComponent,
-    EventDialogComponent
+    EventDialogComponent,
+    ResultDialogComponent
   ],
   providers: [],
   bootstrap: [RootComponent]
