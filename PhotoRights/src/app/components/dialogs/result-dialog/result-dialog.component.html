@@ -1,0 +1,9 @@
+<div id="icon">
+  <mat-icon class="success" *ngIf="data.success">check_circle</mat-icon>
+  <mat-icon class="error" *ngIf="!data.success">error</mat-icon>
+</div>
+
+<div id="text">{{ data.message }}</div>
+<div id="close">
+  <button mat-raised-button color="warn" (click)="dialogRef.close()">Close</button>
+</div>
