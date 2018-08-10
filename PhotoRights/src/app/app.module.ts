@@ -23,6 +23,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { EventsComponent } from './components/events/events.component';
 import { EventDialogComponent } from './components/dialogs/event-dialog/event-dialog.component';
 import { ResultDialogComponent } from './components/dialogs/result-dialog/result-dialog.component';
+import { TransferDialogComponent } from './components/dialogs/transfer-dialog/transfer-dialog.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ResultDialogComponent } from './components/dialogs/result-dialog/result
     UploadComponent,
     EventsComponent,
     EventDialogComponent,
-    ResultDialogComponent
+    ResultDialogComponent,
+    TransferDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { ResultDialogComponent } from './components/dialogs/result-dialog/result
     AbiComponent,
     WarningComponent,
     EventDialogComponent,
-    ResultDialogComponent
+    ResultDialogComponent,
+    TransferDialogComponent
   ],
   providers: [],
   bootstrap: [RootComponent]

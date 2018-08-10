@@ -1,0 +1,14 @@
+<div>
+  {{ data.returnValues.adder }}
+  {{ data.returnValues.index }}
+  {{ data.returnValues.hash }}
+</div>
+
+<mat-form-field>
+  <input matInput placeholder="New Address" [(ngModel)]="newAddress">
+</mat-form-field>
+
+<div>
+  <button mat-raised-button [disabled]="!newAddress" (click)="transfer()">Transfer</button>
+  <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
+</div>
