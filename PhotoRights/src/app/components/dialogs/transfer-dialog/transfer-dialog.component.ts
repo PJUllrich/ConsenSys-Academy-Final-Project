@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import RegistrationEvent from '../../../models/registrationEvent';
+import Hash from '../../../models/hash';
 
 @Component({
   selector: 'app-transfer-dialog',
@@ -11,9 +11,18 @@ export class TransferDialogComponent {
 
   public newAddress: string;
 
-  constructor(public dialogRef: MatDialogRef<TransferDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: RegistrationEvent) { }
+  constructor(public dialogRef: MatDialogRef<TransferDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Hash) { }
 
   public transfer() {
-    this.dialogRef.close({event: this.data, newAddress: this.newAddress})
+    this.dialogRef.close({element: this.data, newAddress: this.newAddress})
+  }
+
+  public setAddress(address: string) {
+    this.newAddress = address;
+    console.log(!this.newAddress);
+  }
+
+  public reset() {
+    this.newAddress = null;
   }
 }

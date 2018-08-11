@@ -44,7 +44,7 @@ export class ContractService {
 
   public remove(index: number): Promise<any> {
     return this._contract.methods.remove(index)
-      .send(this.payload)
+      .send({from: this.accountService.account, gas: 100000})
   }
 
   public transfer(index: number, toAddress: string) {

@@ -40,10 +40,6 @@ export class UploadComponent extends FileLoaderComponent {
       );
   }
 
-  public transfer(toAddress: string) {
-    // this.contractService.transfer(this.fingerprint, toAddress);
-  }
-
   public clear() {
     this.fingerprint = null;
     this.form.nativeElement.reset();

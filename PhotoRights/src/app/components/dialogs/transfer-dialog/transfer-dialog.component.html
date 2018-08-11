@@ -1,14 +1,26 @@
 <div>
-  {{ data.returnValues.adder }}
-  {{ data.returnValues.index }}
-  {{ data.returnValues.hash }}
+  <mat-list>
+    <mat-list-item>
+      Owner: {{ data.owner }}
+    </mat-list-item>
+    <mat-list-item>
+      Index: {{ data.index }}
+    </mat-list-item>
+    <mat-list-item>
+      Fingerprint: {{ data.fingerprint }}
+    </mat-list-item>
+  </mat-list>
 </div>
 
-<mat-form-field>
-  <input matInput placeholder="New Address" [(ngModel)]="newAddress">
-</mat-form-field>
+<div>
+  <form>
+    <mat-form-field>
+      <input #newAddressInput matInput placeholder="New Address" (keyup)="setAddress(newAddressInput.value)">
+    </mat-form-field>
+  </form>
+</div>
 
 <div>
-  <button mat-raised-button [disabled]="!newAddress" (click)="transfer()">Transfer</button>
+  <button mat-raised-button (click)="transfer()">Transfer</button>
   <button mat-raised-button color="warn" (click)="dialogRef.close()">Cancel</button>
 </div>

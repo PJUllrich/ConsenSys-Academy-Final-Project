@@ -24,6 +24,7 @@ import { EventsComponent } from './components/events/events.component';
 import { EventDialogComponent } from './components/dialogs/event-dialog/event-dialog.component';
 import { ResultDialogComponent } from './components/dialogs/result-dialog/result-dialog.component';
 import { TransferDialogComponent } from './components/dialogs/transfer-dialog/transfer-dialog.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { TransferDialogComponent } from './components/dialogs/transfer-dialog/tr
     EventsComponent,
     EventDialogComponent,
     ResultDialogComponent,
-    TransferDialogComponent
+    TransferDialogComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

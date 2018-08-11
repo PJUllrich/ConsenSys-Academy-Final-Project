@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog, MatTableDataSource } from '@angular/material';
-import RegistrationEvent from '../../models/registrationEvent';
 import { ContractService } from '../../services/contract/contract.service';
 import { AccountService } from '../../services/account/account.service';
 import { ResultDialogComponent } from '../dialogs/result-dialog/result-dialog.component';
@@ -25,54 +24,61 @@ export class RegistrationsComponent implements OnInit {
     this.accountService.accountObservable.subscribe(_ => this.getRegistrations());
   }
 
-  public transfer(element: RegistrationEvent) {
+  public transfer(element: Hash) {
     const dialogRef = this.dialog.open(TransferDialogComponent, {data: element});
     dialogRef.afterClosed().subscribe(
-      result => this.contractService.transfer(result.event.returnValues.index, result.newAddress)
-        .then(
-          _ => this.dialog.open(ResultDialogComponent, {
-            data: {
-              success: true,
-              message: 'Image transferred successfully to ' + result.newAddress
-            }
-          }),
-          error => {
-            console.error(error);
-            this.dialog.open(ResultDialogComponent, {
-              data: {
-                success: false,
-                message: 'An error occurred while transferring the image'
-              }
+      result => {
+        if (result != null) this.contractService.transfer(result.element.index, result.newAddress)
+          .then(
+            _ => {
+              this.dialog.open(ResultDialogComponent, {
+                data: {
+                  success: true,
+                  message: 'Image transferred successfully to ' + result.newAddress
+                }
+              });
+              this.getRegistrations();
+            },
+            error => {
+              console.error(error);
+              this.dialog.open(ResultDialogComponent, {
+                data: {
+                  success: false,
+                  message: 'An error occurred while transferring the image'
+                }
+              });
             });
-          }
-        )
+      }
     );
   }
 
-  public remove(element: RegistrationEvent) {
+  public remove(element: Hash) {
     this.contractService
-      .remove(element.returnValues.index)
+      .remove(element.index)
       .then(
-        _ => this.dialog.open(ResultDialogComponent, {
-          data: {
-            success: true,
-            message: 'Image registration removed successfully'
-          }
-        }),
-        error => {
-          console.log(error);
+        _ => {
           this.dialog.open(ResultDialogComponent, {
             data: {
-              success: false,
-              message: 'An error occurred while removing the image'
+              success: true,
+              message: 'Image registration removed successfully'
             }
           });
-        }
+          this.getRegistrations();
+        },
+            error => {
+              console.log(error);
+              this.dialog.open(ResultDialogComponent, {
+                data: {
+                  success: false,
+                  message: 'An error occurred while removing the image'
+                }
+              });
+            }
       );
   }
 
-  private getRegistrations() {
-    if (this.contractService.contract.options.from == null) return;
+  public getRegistrations() {
+    if (this.contractService.contract.options.address == null) return;
     if (this.accountService.account == null) return;
 
     this.contractService.contract.methods.getRegistrationCount().call().then(result => {
@@ -92,9 +98,10 @@ export class RegistrationsComponent implements OnInit {
           });
       }
     });
-  };
+  }
+  ;
 
-  private hashKnown(hash: Hash) : boolean{
+  private hashKnown(hash: Hash): boolean {
     for (let registration of this._registrations)
       if (registration.fingerprint.toUpperCase() === hash.fingerprint.toUpperCase()) return true;
 
