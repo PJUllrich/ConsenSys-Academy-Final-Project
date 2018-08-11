@@ -7,12 +7,12 @@
       <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="index">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Index</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.returnValues.index }}</mat-cell>
+          <mat-cell *matCellDef="let element">{{ element.index }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="hash">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Hash</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.returnValues.hash | slice : 0 : 6 }}...{{ element.returnValues.hash | slice : -6 }}</mat-cell>
+          <mat-cell *matCellDef="let element">{{ element.fingerprint | slice : 0 : 6 }}...{{ element.fingerprint | slice : -6 }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">

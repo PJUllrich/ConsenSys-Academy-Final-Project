@@ -58,7 +58,7 @@ export class ContractService {
   }
 
   private startEventListening() {
-    this._contractEvents.events.allEvents({adder: this.accountService.account, fromBlock: 0}, (error, event) => {
+    this._contractEvents.events.allEvents({fromBlock: 0}, (error, event) => {
       if (error != null) console.error(error);
       if (event != null) this.events.next(event);
     })

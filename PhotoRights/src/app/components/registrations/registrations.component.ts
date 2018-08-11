@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog, MatTableDataSource } from '@angular/material';
 import RegistrationEvent from '../../models/registrationEvent';
-import { Subscription } from 'rxjs';
 import { ContractService } from '../../services/contract/contract.service';
 import { AccountService } from '../../services/account/account.service';
 import { ResultDialogComponent } from '../dialogs/result-dialog/result-dialog.component';
 import { TransferDialogComponent } from '../dialogs/transfer-dialog/transfer-dialog.component';
+import Hash from '../../models/hash';
 
 @Component({
   selector: 'app-registrations',
@@ -14,41 +14,90 @@ import { TransferDialogComponent } from '../dialogs/transfer-dialog/transfer-dia
 })
 export class RegistrationsComponent implements OnInit {
 
-  private _events: RegistrationEvent[] = [];
-  private _eventSubscription: Subscription;
-  public dataSource = new MatTableDataSource<RegistrationEvent>();
+  private _registrations: Hash[] = [];
+  public dataSource = new MatTableDataSource<Hash>();
   public displayedColumns = ['index', 'hash', 'actions'];
 
-  constructor(private contractService: ContractService, private accountService: AccountService, private dialog: MatDialog) { }
+  constructor(private contractService: ContractService, private accountService: AccountService, private dialog: MatDialog, private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this._eventSubscription = this.contractService.events.subscribe(
-      (event: RegistrationEvent) => {
-        if (event.event === 'Registration' && event.returnValues.adder.toUpperCase() === this.accountService.account) {
-          this._events.push(event);
-          this.dataSource = new MatTableDataSource(this._events);
-        }
-      }
-    );
+    this.contractService.events.subscribe(_ => this.getRegistrations());
+    this.accountService.accountObservable.subscribe(_ => this.getRegistrations());
   }
 
   public transfer(element: RegistrationEvent) {
-    const dialogRef = this.dialog.open(TransferDialogComponent, {data: element})
+    const dialogRef = this.dialog.open(TransferDialogComponent, {data: element});
     dialogRef.afterClosed().subscribe(
       result => this.contractService.transfer(result.event.returnValues.index, result.newAddress)
         .then(
-          _ => this.dialog.open(ResultDialogComponent, {data: {success: true, message: 'Image transferred successfully to ' + result.newAddress }}),
-        _ => this.dialog.open(ResultDialogComponent, {data: {success: false, message: 'An error occurred while transferring the image'}})
+          _ => this.dialog.open(ResultDialogComponent, {
+            data: {
+              success: true,
+              message: 'Image transferred successfully to ' + result.newAddress
+            }
+          }),
+          error => {
+            console.error(error);
+            this.dialog.open(ResultDialogComponent, {
+              data: {
+                success: false,
+                message: 'An error occurred while transferring the image'
+              }
+            });
+          }
         )
-    )
+    );
   }
 
   public remove(element: RegistrationEvent) {
     this.contractService
       .remove(element.returnValues.index)
       .then(
-        _ => this.dialog.open(ResultDialogComponent, {data: {success: true, message: 'Image registration removed successfully'}}),
-        _ => this.dialog.open(ResultDialogComponent, {data: {success: false, message: 'An error occurred while removing the image'}})
+        _ => this.dialog.open(ResultDialogComponent, {
+          data: {
+            success: true,
+            message: 'Image registration removed successfully'
+          }
+        }),
+        error => {
+          console.log(error);
+          this.dialog.open(ResultDialogComponent, {
+            data: {
+              success: false,
+              message: 'An error occurred while removing the image'
+            }
+          });
+        }
       );
+  }
+
+  private getRegistrations() {
+    if (this.contractService.contract.options.from == null) return;
+    if (this.accountService.account == null) return;
+
+    this.contractService.contract.methods.getRegistrationCount().call().then(result => {
+      this._registrations = [];
+      this.dataSource = new MatTableDataSource<Hash>(this._registrations);
+
+      for (let idx = 0; idx < result; idx++) {
+        this.contractService.contract.methods
+          .registry(idx)
+          .call()
+          .then(hash => {
+            if (hash != null && hash.owner.toUpperCase() === this.accountService.account && !this.hashKnown(hash)) {
+              this._registrations.push(new Hash(idx, hash.fingerprint, hash.owner, hash.timestamp));
+              this.dataSource = new MatTableDataSource<Hash>(this._registrations);
+            }
+            this.ref.detectChanges();
+          });
+      }
+    });
+  };
+
+  private hashKnown(hash: Hash) : boolean{
+    for (let registration of this._registrations)
+      if (registration.fingerprint.toUpperCase() === hash.fingerprint.toUpperCase()) return true;
+
+    return false;
   }
 }
