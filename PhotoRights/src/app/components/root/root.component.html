@@ -5,5 +5,5 @@
 
   <mat-grid-tile><app-registrations class="filling"></app-registrations></mat-grid-tile>
   <mat-grid-tile><app-upload class="filling"></app-upload></mat-grid-tile>
-  <mat-grid-tile><app-admin class="filling"></app-admin></mat-grid-tile>
+  <mat-grid-tile *ngIf="accountService.isAdmin"><app-admin class="filling"></app-admin></mat-grid-tile>
 </mat-grid-list>

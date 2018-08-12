@@ -4,11 +4,12 @@
   </mat-card-header>
 
   <mat-card-content>
-    <div class="mat-title">You are the Owner of the Smart Contract</div>
+    <div class="mat-subheading-2">You are the Owner of the Smart Contract</div>
+    <div class="mat-subheading-1">The contract is <b>{{ isPaused ? '' : 'not' }}</b> paused</div>
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="deploy()">Pause Contract</button>
-    <button mat-raised-button color="primary" (click)="connect()">Unpause Contract</button>
+    <button mat-raised-button color="primary" [disabled]="isPaused" (click)="pause()">Pause Contract</button>
+    <button mat-raised-button color="primary" [disabled]="!isPaused" (click)="unpause()">Unpause Contract</button>
   </mat-card-actions>
 </mat-card>

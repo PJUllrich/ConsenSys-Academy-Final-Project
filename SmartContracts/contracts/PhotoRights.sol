@@ -33,7 +33,7 @@ contract PhotoRights is Pausable {
         _;
     }
 
-    function register(string imageHash) external hashAllowed(imageHash) {
+    function register(string imageHash) external hashAllowed(imageHash) whenNotPaused {
         bytes32 fingerprint = digest(imageHash);
 
         (bool registered, ) = isRegistered(fingerprint);
@@ -49,13 +49,13 @@ contract PhotoRights is Pausable {
         return isRegistered(fingerprint);
     }
 
-    function remove(uint index) external exists(index) isOwner(msg.sender, index) {
+    function remove(uint index) external exists(index) isOwner(msg.sender, index) whenNotPaused {
         delete registry[index];
 
         emit Removal(msg.sender, index);
     }
 
-    function transfer(uint index, address newOwner) external exists(index) isOwner(msg.sender, index) {
+    function transfer(uint index, address newOwner) external exists(index) isOwner(msg.sender, index) whenNotPaused {
         require(newOwner != address(0));
 
         registry[index].owner = newOwner;

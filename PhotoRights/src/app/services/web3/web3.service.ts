@@ -45,4 +45,5 @@ export class Web3Service {
   get web3Events(): any {
     return this._web3Events;
   }
+
 }

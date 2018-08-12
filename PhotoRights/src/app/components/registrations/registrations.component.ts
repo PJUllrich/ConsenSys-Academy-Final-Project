@@ -86,8 +86,7 @@ export class RegistrationsComponent implements OnInit {
       this.dataSource = new MatTableDataSource<Hash>(this._registrations);
 
       for (let idx = 0; idx < result; idx++) {
-        this.contractService.contract.methods
-          .registry(idx)
+        this.contractService.contract.methods.registry(idx)
           .call()
           .then(hash => {
             if (hash != null && hash.owner.toUpperCase() === this.accountService.account && !this.hashKnown(hash)) {

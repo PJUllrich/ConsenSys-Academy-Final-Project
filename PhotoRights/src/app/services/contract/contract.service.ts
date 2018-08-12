@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import * as ABI from 'src/assets/PhotoRights.json';
 import { Web3Service } from '../web3/web3.service';
 import { AccountService } from '../account/account.service';
@@ -13,8 +13,9 @@ export class ContractService {
   private _contractEvents: any;
   public events = new ReplaySubject();
 
-  constructor(private web3Service: Web3Service, private accountService: AccountService) {
+  constructor(private web3Service: Web3Service, private accountService: AccountService, private ref: ApplicationRef) {
     this.web3Service.initialized.subscribe(initialized => { if (initialized) this.setContract(); });
+    this.accountService.accountObservable.subscribe(() => this.checkIsAdmin());
   }
 
   public deploy() {
@@ -35,21 +36,36 @@ export class ContractService {
 
   public register(fingerprint: string): Promise<any> {
     return this._contract.methods.register(fingerprint)
-      .send(this.payload)
+      .send(this.payload);
   }
+
   public check(fingerprint: string): Promise<any> {
     return this._contract.methods.checkRegistration(fingerprint)
-      .call(this.payload)
+      .call(this.payload);
   }
 
   public remove(index: number): Promise<any> {
     return this._contract.methods.remove(index)
-      .send({from: this.accountService.account, gas: 100000})
+      .send({from: this.accountService.account, gas: 100000});
   }
 
   public transfer(index: number, toAddress: string) {
     return this._contract.methods.transfer(index, toAddress)
-      .send(this.payload)
+      .send(this.payload);
+  }
+
+  public pause() {
+    return this._contract.methods.pause()
+      .send(this.payload);
+  }
+
+  public unpause() {
+    return this._contract.methods.unpause()
+      .send(this.payload);
+  }
+
+  public isPaused() {
+    return this._contract.methods.paused().call();
   }
 
   private setContract(address: string = null) {
@@ -61,7 +77,19 @@ export class ContractService {
     this._contractEvents.events.allEvents({fromBlock: 0}, (error, event) => {
       if (error != null) console.error(error);
       if (event != null) this.events.next(event);
-    })
+      this.checkIsAdmin()
+    });
+  }
+
+  private checkIsAdmin() {
+    if (this.contract.options.address == null) return;
+
+    this._contract.methods.owner()
+      .call()
+      .then(owner => {
+        this.accountService.isAdmin = owner.toUpperCase() === this.accountService.account;
+        this.ref.tick();
+      });
   }
 
   get abi() {
@@ -73,6 +101,6 @@ export class ContractService {
   }
 
   get payload() {
-    return {from: this.accountService.account}
+    return {from: this.accountService.account};
   }
 }

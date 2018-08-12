@@ -11,16 +11,13 @@ export class AccountService {
 
   private _balanceCrypto: number = 0;
   private _balanceFiat: number = 0;
-
   private _account: string;
+
+  public isAdmin: boolean = false;
   public accountObservable = new BehaviorSubject<string>(null);
 
   constructor(private web3Service: Web3Service) {
-    this.web3Service.initialized.subscribe((initialized) => {
-      if (initialized) {
-        this.initialize();
-      }
-    });
+    this.web3Service.initialized.subscribe(initialized => { if (initialized) this.initialize(); });
   }
 
   private initialize() {
