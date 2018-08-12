@@ -33,6 +33,11 @@ contract('PhotoRights', async (accounts) => {
         assert.fail("Expected throw not received");
     };
 
+    /*
+    The following tests were written to test the standard contract functionality
+    The standard functions are Create, Retrieve, Update (Transfer), Remove, also called CRUD.
+    The tests aim to test the success scenarios for each functionality.
+     */
     describe("CRUD operations on Image", () => {
         beforeEach(registerImage);
 
@@ -65,6 +70,10 @@ contract('PhotoRights', async (accounts) => {
         });
     });
 
+    /*
+    The following tests test the functionality of the contract modifiers.
+    The tests use invalid input and expect exceptions.
+     */
     describe("Contract Modifiers", () => {
         beforeEach(deploy);
 
@@ -94,6 +103,10 @@ contract('PhotoRights', async (accounts) => {
         })
     });
 
+    /*
+    The following tests aim to test the functionality of the Open Zeppelin Pausable contract.
+    The tests test the success scenarios of the functionality.
+     */
     describe("Pausable Contract", () => {
         beforeEach(deploy);
 
@@ -113,6 +126,10 @@ contract('PhotoRights', async (accounts) => {
         });
     });
 
+    /*
+    The following tests test the Pausable contract modifiers.
+    The tests use invalid input and expect exceptions.
+     */
     describe("Pausable Contract Modifiers", () => {
         beforeEach(deploy);
 
