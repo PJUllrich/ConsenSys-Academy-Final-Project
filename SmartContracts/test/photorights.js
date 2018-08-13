@@ -83,6 +83,12 @@ contract('PhotoRights', async (accounts) => {
             );
         });
 
+        it('should fail to register a too long hash', async () => {
+            await expectThrow(
+                instance.register(randomHash().repeat(6))
+            )
+        });
+
         it('should fail if non-owner removes image', async () => {
             await registerImage();
             await expectThrow(
@@ -162,7 +168,7 @@ contract('PhotoRights', async (accounts) => {
 });
 
 function randomHash() {
-    return Math.random().toString(36).replace(/[^A-Za-z0-9]+/g, '').substr(0, 64);
+    return Math.random().toString(36).replace(/[^A-Za-z0-9]+/g, '');
 }
 
 function randomInteger(min = 0, max = 1) {

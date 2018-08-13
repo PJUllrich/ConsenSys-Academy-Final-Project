@@ -8,7 +8,7 @@ import "../installed_contracts/zeppelin/contracts/lifecycle/Pausable.sol";
 contract PhotoRights is Pausable {
 
     // @dev Struct that store all information about a image registration.
-    struct Registration {
+    struct Image {
 
         // @dev Keccak256 hash of image data.
         bytes32 fingerprint;
@@ -22,7 +22,11 @@ contract PhotoRights is Pausable {
 
     // @dev The main storage array that contains structs that stores
     // all information for the image registrations.
-    Registration[] public registry;
+    Image[] public registry;
+
+    // @dev The maximal input length in bytes for image data.
+    // Equal to the length of a Sha256 hash, which has 256 bit = 64 bytes.
+    uint private maxInputLength = 64;
 
     // @dev Registration event is emitted whenever a new image is registered.
     event Registration(address adder, uint index, bytes32 hash);
@@ -52,8 +56,9 @@ contract PhotoRights is Pausable {
 
     // @dev Conditional Modifier that verifies that the image data input is not empty.
     // Could be extended to cover more edge cases.
-    modifier hashAllowed(string imageHash) {
-        require(digest(imageHash) != digest(''));
+    modifier dataAllowed(string imageData) {
+        require(bytes(imageData).length <= maxInputLength);
+        require(bytes(imageData).length > 0);
         _;
     }
 
@@ -66,7 +71,7 @@ contract PhotoRights is Pausable {
         string imageData
     )
         external
-        hashAllowed(imageData)
+        dataAllowed(imageData)
         whenNotPaused
     {
         bytes32 fingerprint = digest(imageData);
@@ -74,7 +79,7 @@ contract PhotoRights is Pausable {
         (bool registered,) = isRegistered(fingerprint);
         require(!registered);
 
-        registry.push(Hash(fingerprint, msg.sender, now));
+        registry.push(Image(fingerprint, msg.sender, now));
 
         emit Registration(msg.sender, registry.length - 1, fingerprint);
     }
@@ -89,11 +94,10 @@ contract PhotoRights is Pausable {
     )
         external
         view
-        hashAllowed(imageData)
+        dataAllowed(imageData)
         returns (bool, uint)
     {
-        bytes32 fingerprint = digest(imageData);
-        return isRegistered(fingerprint);
+        return isRegistered(digest(imageData));
     }
 
     // @dev An external method with which a image registration can be removed. Only the owner of
