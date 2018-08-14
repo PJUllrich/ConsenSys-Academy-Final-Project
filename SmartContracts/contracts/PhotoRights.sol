@@ -62,6 +62,10 @@ contract PhotoRights is Pausable {
         _;
     }
 
+    // @dev This default function rejects all ether sent to the contract. This is meant to
+    // prevent anyone from sending ether accidentally to the contract.
+    function() external { throw; }
+
     // @dev An external method that allows the user to create a new image registration
     // from a string containing the image data. The string is typically a Sha3 hex hash of the
     // actual image, but can be any information really. Will generate a Registration event upon

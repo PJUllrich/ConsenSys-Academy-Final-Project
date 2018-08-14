@@ -1,5 +1,10 @@
 # ConsenSys-Academy-Final-Project
-Final Project for the ConsenSys 2018 Developer course
+Final Project for the ConsenSys 2018 Developer course by Peter Ullrich. 
+The project serves as a decentralized register for image ownership. 
+Users can upload an image and register their ownership of the image. 
+Image ownerships can be checked, transferred, and removed, all from within the contract.
+
+The contract uses Open Zeppelin's [Pausable](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/lifecycle/Pausable.sol) contract form the EthPM package manager.
 
 ## Requirements
 This project requires you to have installed:
@@ -11,7 +16,7 @@ This project requires you to have installed:
 
 ## Setting up the Project
 1. Clone the project with `git clone https://github.com/PJUllrich/ConsenSys-Academy-Final-Project.git`
-1. `cd` into the `PhotoRights` folder with `cd PhotoRights`
+1. `cd` into the `PhotoRights` folder with `cd ConsenSys-Academy-Final-Project/PhotoRights`
 1. Install the Angular dependencies with `npm install`
 1. You're all set!
 
@@ -23,14 +28,24 @@ This project requires you to have installed:
 ![](video.com)
 
 ## Testing the Smart Contract
-1. `cd` into the Truffle project with `cd SmartContracts`
 1. Make sure that you have `Ganache` running. If not, start it with `ganache-cli -d`
-1. Run the tests with `truffle test`
+1. From within the `SmartContracts` folder, run the tests with `truffle test`
 1. Check that all tests pass.
 
-## Improvement Possibilities
-- Use IpcProvider instead of HTTPProvider (not supported by Ganache-Cli yet(https://github.com/trufflesuite/ganache-cli/issues/180))
-- Support Photo Rights before  registration in smart contract
+The tests were written to test the success scenarios of the main functionality and the checks 
+of the modifiers used. The tests cover both the contracts functionality and modifiers as well as
+the functionality and modifiers of the [Pausable](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/lifecycle/Pausable.sol) contract by Open Zeppelin.
+The tests are not 100% exhaustive, but were written to cover all state-changing functionality and all modifiers.
 
-## Deployed on Rinkeby Testnet
-`0xd4e21e63A431a3D1e8c1886c8c355c6dc800e194`
+## Rinkeby Testnet
+The contract is deployed on the `Rinkeby` testnet with the address: `0xd4e21e63A431a3D1e8c1886c8c355c6dc800e194`
+The deployed contract serves the same functionality as the local contract.
+The only difference is that the website does not show events for the deployed contract, 
+which is an issue of [MetaMask](https://github.com/MetaMask/metamask-extension/issues/2393) that 
+currently does not support the websockets necessary to receive the streams from the provider.
+
+You can connect to it through the website like this:
+1. Change the network with which `MetaMask` is connected to `Rinkeby testnet`
+1. Copy and paste the aforementioned address into the `Contract address` field
+1. Click `Connect with Contract`
+1. You are now connected to the contract on the Rinkeby testnet!

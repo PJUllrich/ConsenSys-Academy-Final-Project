@@ -41,17 +41,20 @@ contract('PhotoRights', async (accounts) => {
     describe("CRUD operations on Image", () => {
         beforeEach(registerImage);
 
+        // Tests the successful functioning of the register method
         it('should register an image hash', async () => {
             let hash_stored = await instance.registry(0);
             assert.equal(web3.toHex(hash_stored[0]), web3.sha3(hash_random), 'Hashes do not match');
         });
 
+        // Tests the successful functioning of the checkRegistration method
         it('should check registration of image hash', async () => {
             let result = await instance.checkRegistration(hash_random);
 
             assert.ok(result[0], 'Registration check not successful')
         });
 
+        // Tests the successful functioning of the remove method
         it('should remove an image registration', async () => {
             let check_registered = await instance.checkRegistration(hash_random);
             await instance.remove(check_registered[1]);
@@ -60,6 +63,7 @@ contract('PhotoRights', async (accounts) => {
             assert.ok(!check_removed[0], 'Hash was not successfully removed')
         });
 
+        // Tests the successful functioning of the transfer method
         it('should transfer an image ownership', async () => {
             let account_to = accounts[1];
 
@@ -77,18 +81,21 @@ contract('PhotoRights', async (accounts) => {
     describe("Contract Modifiers", () => {
         beforeEach(deploy);
 
+        // Tests the successful functioning of the dataAllowed modifier
         it('should fail to register an empty hash', async () => {
             await expectThrow(
                 instance.register('')
             );
         });
 
+        // Tests the successful functioning of the dataAllowed modifier
         it('should fail to register a too long hash', async () => {
             await expectThrow(
                 instance.register(randomHash().repeat(6))
             )
         });
 
+        // Tests the successful functioning of the onlyOwner modifier
         it('should fail if non-owner removes image', async () => {
             await registerImage();
             await expectThrow(
@@ -96,12 +103,14 @@ contract('PhotoRights', async (accounts) => {
             );
         });
 
+        // Tests the successful functioning of the exists modifier
         it('should fail if non-existent image is removed', async () => {
             await expectThrow(
                 instance.remove(randomInteger(1, 100))
             );
         });
 
+        // Tests the successful functioning of the exists modifier
         it('should fail if negative index is used', async () => {
             await expectThrow(
                 instance.remove(randomInteger(-1, -100))
@@ -116,6 +125,7 @@ contract('PhotoRights', async (accounts) => {
     describe("Pausable Contract", () => {
         beforeEach(deploy);
 
+        // Tests the successful functioning of the pause method
         it('should pause the contract', async () => {
             await instance.pause();
 
@@ -123,6 +133,7 @@ contract('PhotoRights', async (accounts) => {
             assert.ok(isPaused, 'Contract not paused successfully');
         });
 
+        // Tests the successful functioning of the unpause method
         it('should unpause the contract', async () => {
             await instance.pause();
             await instance.unpause();
@@ -139,6 +150,7 @@ contract('PhotoRights', async (accounts) => {
     describe("Pausable Contract Modifiers", () => {
         beforeEach(deploy);
 
+        // Tests the successful functioning of the whenNotPaused modifier and the register method
         it('should fail to register an image when contract is paused', async () => {
             await instance.pause();
 
@@ -147,6 +159,7 @@ contract('PhotoRights', async (accounts) => {
             );
         });
 
+        // Tests the successful functioning of the whenNotPaused modifier and the remove method
         it('should fail to remove an image when contract is paused', async () => {
             await instance.register(randomHash());
             await instance.pause();
@@ -156,6 +169,7 @@ contract('PhotoRights', async (accounts) => {
             );
         });
 
+        // Tests the successful functioning of the whenNotPaused modifier and the transfer method
         it('should fail to transfer an image when contract is paused', async () => {
             await instance.register(randomHash());
             await instance.pause();
