@@ -6,6 +6,16 @@ Image ownerships can be checked, transferred, and removed, all from within the c
 
 The contract uses Open Zeppelin's [Pausable](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/lifecycle/Pausable.sol) contract form the EthPM package manager.
 
+## User Story
+The Photo Rights contract offers user to register their ownership over certain images. A 
+photographer could for example register her ownership over pictures before sending them to 
+agencies or online magazines. With the registered ownership, the photographer can always prove 
+that she was the first person to register that image. The user can transfer her ownership to 
+another user if e.g. she sold the image. Also, the user can remove the ownership registration for
+whatever reason there might be. The contract can also be used to check for ownership 
+registration of a given image. This could be used by e.g. online magazines to check the 
+copyright situation with images they receive or want to publish. 
+
 ## Requirements
 This project requires you to have installed:
 1. [Ganache v6.1.6](https://truffleframework.com/ganache)
