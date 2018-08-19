@@ -21,6 +21,7 @@ This project requires you to have installed:
 1. [Ganache v6.1.6](https://truffleframework.com/ganache)
 1. [Truffle v4.1.13](https://truffleframework.com/)
 1. [npm v6.3.0](https://www.npmjs.com/)
+1. [Angular CLI v6.0.8](https://cli.angular.io/) 
 1. [MetaMask](https://metamask.io/)
 1. [Git](https://git-scm.com/)
 
@@ -28,6 +29,7 @@ This project requires you to have installed:
 1. Clone the project with `git clone https://github.com/PJUllrich/ConsenSys-Academy-Final-Project.git`
 1. `cd` into the `PhotoRights` folder with `cd ConsenSys-Academy-Final-Project/PhotoRights`
 1. Install the Angular dependencies with `npm install`
+1. Make sure that Angular is installed with `npm install -g @angular/cli`
 1. You're all set!
 
 ## Testing the User Interface
