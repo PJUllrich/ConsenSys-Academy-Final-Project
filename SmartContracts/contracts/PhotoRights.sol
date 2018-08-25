@@ -153,6 +153,13 @@ contract PhotoRights is Pausable {
         return registry.length;
     }
 
+    // WARNING: DO NOT use this function in production! This function is vulnerable to a Denial of Service attack where an attacker would
+    // register too many images to iterate through, which has as a consequence that this function exceeds the
+    // gas limit, which effectively renders the contract unusable. The function could be fixed with e.g. a map
+    // that keeps track of which image hashes were registered, where a simple look-up call would serve the offer
+    // the same functionality. However, since this contract was written as part of the final project of
+    // the ConsenSys Developer Program, I have not changed it
+    // 
     // @dev An internal view method that checks whether a registration for a given keccak256 hash exists.
     // Returns true and the index of the registration in the registry array if a image registration
     // exists. Otherwise returns false and null. The method iterates through the whole registry
